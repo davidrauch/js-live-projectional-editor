@@ -1,0 +1,7 @@
+export const INPUT_VALUE_CHANGED: String = "INPUT_VALUE_CHANGED";
+export const INPUT_NEXT_SUGGESTION: String = "INPUT_NEXT_SUGGESTION";
+export const INPUT_PREV_SUGGESTION: String = "INPUT_PREV_SUGGESTION";
+export const INPUT_POSITION_CHANGED: String = "INPUT_POSITION_CHANGED";
+export const INPUT_CONFIRM: String = "INPUT_CONFIRM";
+export const INPUT_HIDE: String = "INPUT_HIDE";
+export const INPUT_NEXT: String = "INPUT_NEXT";

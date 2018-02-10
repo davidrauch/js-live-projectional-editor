@@ -1,0 +1,69 @@
+.ast {
+  height: 100vh;
+  font-family: "Fira Code", monospace;
+  font-size: 14pt;
+}
+
+.hue-1 /* Cyan */ {
+  background-color: hsl(198, 69%, 67%) !important;
+}
+
+.hue-1:hover /* Cyan */ {
+  border-color: hsl(198, 69%, 37%) !important;
+}
+
+.hue-2 /* Blue */ {
+  background-color: hsl(198, 69%, 67%) !important;
+}
+
+.hue-2:hover /* Blue */ {
+  border-color: hsl(198, 69%, 37%) !important;
+}
+
+.hue-3 /* Purple */ {
+  background-color: hsl(301, 33%, 70%) !important;
+}
+
+.hue-3:hover /* Purple */ {
+  border-color: hsl(301, 33%, 40%) !important;
+}
+
+.hue-4 /* Green */ {
+  background-color: hsl(119, 4%, 77%) !important;
+}
+
+.hue-4:hover /* Green */ {
+  border-color: hsl(119, 4%, 47%) !important;
+}
+
+.hue-5 /* Red 1 */ {
+  background-color: hsl(5, 44%, 89%) !important;
+}
+
+.hue-5:hover /* Red 1 */ {
+  border-color: hsl(5, 44%, 59%) !important;
+}
+
+.hue-5-2 /* Red 2 */ {
+  background-color: hsl(344, 54%, 63%) !important;
+}
+
+.hue-5-2:hover /* Red 2 */ {
+  border-color: hsl(344, 54%, 33%) !important;
+}
+
+.hue-6 /* Orange 1 */ {
+  background-color: hsl(41, 69%, 60%) !important;
+}
+
+.hue-6:hover /* Orange 1 */ {
+  border-color: hsl(41, 69%, 30%) !important;
+}
+
+.hue-6-2 /* Orange 2 */ {
+  background-color: hsl(41, 69%, 68%) !important;
+}
+
+.hue-6-2:hover /* Orange 2 */ {
+  border-color: hsl(41, 69%, 38%) !important;
+}
