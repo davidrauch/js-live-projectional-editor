@@ -7,6 +7,7 @@ import {
   indexOfKey,
   findElementWithKey,
   findParentOfElementWithKey,
+  clearProperties,
 } from '../utils/astUtils';
 
 export default function ast(state = initialState.ast, action) {
@@ -41,8 +42,8 @@ function add(ast, element, name, position, inserting) {
     const targetArray = findParentOfElementWithKey(ast, position);
     targetArray.splice(index, 0, newElement);
   } else {
-    //TODO: Clear existing properties?
     const targetElement = findElementWithKey(ast, position);
+    clearProperties(targetElement);
     Object.assign(targetElement, newElement);
   }
 

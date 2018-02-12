@@ -72,9 +72,15 @@ export const assignKeys = (currentElement, key="") => {
   return currentElement;
 }
 
-export const findElementWithKey = (currentElement, key) =>
-  dotProp.get(currentElement, key)
+export const findElementWithKey = (ast, key) =>
+  dotProp.get(ast, key)
 
-export const findParentOfElementWithKey = (currentElement, key) => {
-  return findElementWithKey(currentElement, parentKey(key))
+export const findParentOfElementWithKey = (ast, key) => {
+  return findElementWithKey(ast, parentKey(key))
+}
+
+export const clearProperties = (node) => {
+  for(let key in node) {
+    delete node[key];
+  }
 }

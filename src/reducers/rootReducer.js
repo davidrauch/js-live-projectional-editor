@@ -7,6 +7,8 @@ import {
   findParentOfElementWithKey,
   parentKey,
   propertyOfKey,
+  indexOfKey,
+  joinKeys,
 } from '../utils/astUtils';
 import dotProp from "dot-prop";
 
@@ -43,41 +45,57 @@ const inputNext = (state) => {
   // Check if we were in a list
   if(inserting) {
     // Move to first property of the next element
-    const newElement = getFirstEditableElementOf(currentElement);
-
-    position = newElement._key;
+    position = getFirstEditableChildElementOf(currentElement);
     inserting = false;
   } else {
-    // Go over the parent
-    const keyOfParent = parentKey(position);
-    const parentElement = findElementWithKey(state.ast, keyOfParent);
+    [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
 
-    const parentProperties = elementPropertyOrder[parentElement.type];
-    const targetIndex = parentProperties.indexOf(propertyOfKey(position)) + 1;
-
-    if(targetIndex >= parentProperties.length) {
-      console.error("Should go farther up");
-      return [position, inserting];
+    if(!inserting) {
+      position = getFirstEditableChildElementOf(findElementWithKey(state.ast, position));
     }
-
-    let newElement = dotProp.get(parentElement, parentProperties[targetIndex]);
-
-    if(newElement) {
-      newElement = getFirstEditableElementOf(newElement);
-    }
-
-    position = newElement._key;
   }
 
   return [position, inserting];
 }
 
-const getFirstEditableElementOf = (element) => {
+const getFirstEditableChildElementOf = (element) => {
   if(element.type in elementPropertyOrder) {
     const property = elementPropertyOrder[element.type][0];
-    return getFirstEditableElementOf(dotProp.get(element, property));
+    return getFirstEditableChildElementOf(dotProp.get(element, property));
   }
-  return element;
+  return element._key;
+}
+
+const getNextEditableParentElementOf = (element, ast) => {
+  let searchProperty = propertyOfKey(element._key);
+  const keyOfParent = parentKey(element._key);
+  let parentElement = findElementWithKey(ast, keyOfParent);
+
+  if(parentElement instanceof Array) {
+    //TODO: Remove exception for VariableDeclaration
+    if(findParentOfElementWithKey(ast, keyOfParent) &&
+      findParentOfElementWithKey(ast, keyOfParent).type === "VariableDeclaration") {
+      parentElement = findParentOfElementWithKey(ast, keyOfParent);
+      searchProperty = "declarations.0.init";
+    } else {
+      const currentIndex = indexOfKey(element._key);
+      const newPosition = joinKeys(keyOfParent, currentIndex+1);
+      return [newPosition, true];
+    }
+  }
+
+  const parentProperties = elementPropertyOrder[parentElement.type];
+  const targetIndex = parentProperties.indexOf(searchProperty) + 1;
+
+  if(targetIndex >= parentProperties.length) {
+    return getNextEditableParentElementOf(parentElement, ast);
+  } else {
+    const newKey = joinKeys(parentElement._key, parentProperties[targetIndex]);
+    if(findElementWithKey(ast, newKey) instanceof Array) {
+      return [joinKeys(newKey, 0), true];
+    }
+    return [newKey, false];
+  }
 }
 
 const elementPropertyOrder = {
@@ -85,4 +103,6 @@ const elementPropertyOrder = {
   VariableDeclarator: ["id", "init"],
   ForStatement: ["init", "test", "update", "body"],
   BinaryExpression: ["left", "right"],
+  UpdateExpression: ["argument"],
+  BlockStatement: ["body"]
 }
