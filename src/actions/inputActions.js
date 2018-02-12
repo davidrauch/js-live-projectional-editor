@@ -13,15 +13,21 @@ export const prevSuggestion = () => ({
   type: types.INPUT_PREV_SUGGESTION
 })
 
-export const confirm = (selection, position) => ({
+export const confirm = (selection, position, inserting) => ({
   type: types.INPUT_CONFIRM,
   selection: selection,
   position: position,
+  inserting: inserting,
 })
 
-export const positionChanged = (newPosition) => ({
+export const positionChanged = (newPosition, isInserting) => ({
   type: types.INPUT_POSITION_CHANGED,
   newPosition: newPosition,
+  isInserting: isInserting,
+})
+
+export const next = () => ({
+  type: types.INPUT_NEXT,
 })
 
 export const hide = () => ({

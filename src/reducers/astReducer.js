@@ -2,72 +2,52 @@ import initialState from './initialState';
 import * as types from '../actions/actionTypes';
 import * as generators from '../utils/astGenerators';
 import dotProp from 'dot-prop'
+import {
+  assignKeys,
+  indexOfKey,
+  findElementWithKey,
+  findParentOfElementWithKey,
+} from '../utils/astUtils';
 
 export default function ast(state = initialState.ast, action) {
   switch(action.type) {
     case types.INPUT_CONFIRM:
-      return insert(
+      if(!action.selection) {
+        return state;
+      }
+
+      return add(
         Object.assign({}, state),
         action.selection.element,
-        action.position
+        action.selection.name,
+        action.position,
+        action.inserting,
       );
     default:
       return state;
   }
 }
 
-function insert(ast, element, position) {
+function add(ast, element, name, position, inserting) {
   if(!(element in generators)) {
     return ast;
   }
 
-  const newElement = generators[element]();
+  const newElement = generators[element](name);
+  let targetElement = null;
 
-  // TODO: Add some kind of key/path cache to avoid this search
-  const findElementWithKey = (currentElement, key) => {
-    // Make sure this is an object
-    if(!(currentElement instanceof Object) || !("type" in currentElement)) {
-      return null;
-    }
-
-    // Check if this is the element
-    if(currentElement._key && currentElement._key === key) {
-      return currentElement;
-    }
-
-    // Search all children
-    let foundElement = null
-    for(let property in currentElement) {
-      if(currentElement[property] instanceof Array) {
-        for(let index in currentElement[property]) {
-          if(currentElement[property][index] instanceof Object && "type" in currentElement[property][index]) {
-            foundElement = findElementWithKey(currentElement[property][index], key);
-            if(foundElement) {
-              return foundElement;
-            }
-          }
-        }
-      } else if(currentElement[property] instanceof Object && "type" in currentElement[property]) {
-        foundElement = findElementWithKey(currentElement[property], key);
-        if(foundElement) {
-          return foundElement;
-        }
-      }
-    }
-
-    return null;
-  };
-
-  const foundElement = findElementWithKey(ast, position.key);
-  if(foundElement) {
-    let target = dotProp.get(foundElement, position.property);
-    if(target instanceof Array && position.index) {
-      target.splice(position.index, 0, newElement);
-    } else {
-      //TODO: Clear existing properties?
-      Object.assign(foundElement, newElement);
-    }
+  if(inserting) {
+    const index = indexOfKey(position);
+    const targetArray = findParentOfElementWithKey(ast, position);
+    targetArray.splice(index, 0, newElement);
+  } else {
+    //TODO: Clear existing properties?
+    const targetElement = findElementWithKey(ast, position);
+    Object.assign(targetElement, newElement);
   }
+
+  //TODO: Don't update all keys everytime
+  assignKeys(ast);
 
   return ast;
 }

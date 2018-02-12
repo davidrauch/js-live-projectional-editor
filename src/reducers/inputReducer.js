@@ -18,32 +18,45 @@ export default function input(state = initialState.input, action) {
       return {
         ...state,
         position: action.newPosition,
+        inserting: action.isInserting,
         value: "",
         selection: 0,
         filteredSuggestions: filterSuggestions(state.suggestions, ""),
       };
     case types.INPUT_CONFIRM:
-      return state;
+    return {
+      ...state,
+      value: "",
+      selection: 0,
+      filteredSuggestions: filterSuggestions(state.suggestions, ""),
+    };
     case types.INPUT_NEXT:
-      return {...state, index: state.index + 1};
+      return {...state, position: {...state.position, index: state.position.index+1}};
     case types.INPUT_HIDE:
-      return {...state, position: hiddenPosition}
+      return {...state, position: "body.0", inserting: true}
     default:
       return state;
   }
 }
 
-const hiddenPosition = {
-  key: null,
-  property: null,
-  index: null
-}
+const filterSuggestions = (suggestions, filter) => {
+  if(filter.length === 0) {
+    return [];
+  }
 
-const filterSuggestions = (suggestions, filter) =>
-  filter.length > 0 ?
-    suggestions.filter(suggestion =>
-      suggestion.name.toLowerCase().indexOf(filter.toLowerCase()) === 0 ||
-      suggestion.description.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-    )
-    :
-    []
+  // Filter the suggestions
+  let filteredSuggestions = suggestions.filter(suggestion =>
+    suggestion.name.toLowerCase().indexOf(filter.toLowerCase()) === 0 ||
+    suggestion.description.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+  )
+
+  // Add Identifier and Literal options
+  const insertIndex = suggestions.length > 0 ? 1 : 0;
+  const insertSuggestions = [
+    { name: filter, description: "Identifier", element: "Identifier" },
+    { name: filter, description: "Literal", element: "Literal" },
+  ]
+  filteredSuggestions.splice(insertIndex, 0, ...insertSuggestions);
+
+  return filteredSuggestions;
+}

@@ -17,7 +17,7 @@ class InputPlaceholder extends React.Component {
 
   onClick = (event) => {
     event.stopPropagation();
-    return this.props.inputActions.positionChanged(this.props.position);
+    return this.props.inputActions.positionChanged(this.props.position, true);
   }
 
 }

@@ -30,7 +30,7 @@ class InputBar extends React.Component {
   renderSuggestionList() {
     return (
       this.props.filteredSuggestions.map((suggestion, index) =>
-        <li className={index === this.props.selection ? "selected" : ""} key={suggestion.id}>
+        <li className={index === this.props.selection ? "selected" : ""} key={suggestion.name+suggestion.element}>
           <span className="name">{suggestion.name}</span>
           <span className="description">{suggestion.description}</span>
         </li>
@@ -39,7 +39,6 @@ class InputBar extends React.Component {
   }
 
   onKeyDown(event) {
-    console.log(event.key)
     switch(event.key) {
       case "ArrowDown":
         event.preventDefault();
@@ -56,7 +55,8 @@ class InputBar extends React.Component {
         event.preventDefault();
         this.props.inputActions.confirm(
           this.props.filteredSuggestions[this.props.selection],
-          this.props.position
+          this.props.position,
+          this.props.inserting,
         );
         break;
       case "Escape":
@@ -75,6 +75,7 @@ function mapStateToProps(state) {
     filteredSuggestions: state.input.filteredSuggestions,
     selection: state.input.selection,
     position: state.input.position,
+    inserting: state.input.inserting,
   };
 }
 

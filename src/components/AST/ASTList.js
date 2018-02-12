@@ -5,37 +5,36 @@ import * as inputActions from '../../actions/inputActions';
 import ASTNode from './ASTNode';
 import InputBar from '../InputBar/InputBar';
 import InputPlaceholder from '../InputBar/InputPlaceholder';
-import {guid} from '../../utils/astUtils';
+import {
+  joinKeys,
+  parentKey,
+  indexOfKey,
+  guid
+} from '../../utils/astUtils';
 import dotProp from 'dot-prop'
 
 class ASTList extends React.Component {
 
   render = () => {
     const childNodes = dotProp.get(this.props.node, this.props.childrenPath);
-    const myPosition = {
-      key: this.props.node._key,
-      property: this.props.childrenPath,
-      index: 0,
-    }
+    const myPosition = joinKeys(this.props.node._key, this.props.childrenPath);
 
     // Generate list of children
     let children = [];
     for(let i = 0; i < childNodes.length; i++) {
       const child = childNodes[i];
       children.push(
-        <InputPlaceholder key={guid()} position={{...myPosition, index: i}}/>,
+        <InputPlaceholder key={guid()} position={joinKeys(myPosition, i)}/>,
         <div className="ASTBlock" key={child._key}>
           <ASTNode node={child} />
         </div>
       )
     }
-    children.push(<InputPlaceholder key={guid()} position={{...myPosition, index: childNodes.length}}/>);
+    children.push(<InputPlaceholder key={guid()} position={joinKeys(myPosition, childNodes.length)}/>);
 
     // Show InputBar if necessary
-    if(this.props.inputPosition.key === myPosition.key &&
-      this.props.inputPosition.property === myPosition.property &&
-      typeof this.props.inputPosition.index === "number") {
-      children[this.props.inputPosition.index * 2] = <InputBar key="inputBar"/>;
+    if(parentKey(this.props.inputPosition) === myPosition && this.props.inputInserting) {
+      children[indexOfKey(this.props.inputPosition) * 2] = <InputBar key="inputBar"/>;
     }
 
     return (
@@ -48,7 +47,8 @@ class ASTList extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  inputPosition: state.input.position
+  inputPosition: state.input.position,
+  inputInserting: state.input.inserting,
 })
 
 const mapDispatchToProps = (dispatch) => ({

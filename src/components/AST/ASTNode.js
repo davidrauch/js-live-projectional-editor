@@ -11,8 +11,7 @@ class ASTNode extends React.Component {
   render = () => {
     let content;
 
-    if(this.props.inputPosition.key === this.props.node._key &&
-      !this.props.inputPosition.property) {
+    if(this.props.inputPosition === this.props.node._key && !this.props.inputInserting) {
       return <InputBar key="inputBar" inline={true}/>;
     } else if(this.props.node) {
       if(this.props.node.type in renderers) {
@@ -35,17 +34,14 @@ class ASTNode extends React.Component {
       return this.props.inputActions.hide();
     }
 
-    return this.props.inputActions.positionChanged({
-      key: this.props.node._key,
-      property: null,
-      index: null,
-    });
+    return this.props.inputActions.positionChanged(this.props.node._key, false);
   }
 
 }
 
 const mapStateToProps = (state) => ({
   inputPosition: state.input.position,
+  inputInserting: state.input.inserting,
 })
 
 const mapDispatchToProps = (dispatch) => ({
