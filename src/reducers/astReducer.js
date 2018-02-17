@@ -1,7 +1,6 @@
 import initialState from './initialState';
 import * as types from '../actions/actionTypes';
 import * as generators from '../utils/astGenerators';
-import dotProp from 'dot-prop'
 import {
   assignKeys,
   indexOfKey,
@@ -35,7 +34,6 @@ function add(ast, element, name, position, inserting) {
   }
 
   const newElement = generators[element](name);
-  let targetElement = null;
 
   if(inserting) {
     const index = indexOfKey(position);

@@ -25,7 +25,7 @@ export const joinKeys = (key1, key2) => {
 
 export const parentKey = (key) => {
   let keyParts = key.split('.');
-  const lastPart = keyParts.pop();
+  keyParts.pop();
   // If the last part is a number, we have to remove one more part
   //if(isNumber(lastPart)) {
   //  keyParts.pop();

@@ -40,18 +40,24 @@ export default function root(state = initialState, action) {
 const inputNext = (state) => {
   let position = state.input.position;
   let inserting = state.input.inserting;
-  const currentElement = dotProp.get(state.ast, position);
+  let currentElement = dotProp.get(state.ast, position);
 
   // Check if we were in a list
   if(inserting) {
-    // Move to first property of the next element
-    position = getFirstEditableChildElementOf(currentElement);
-    inserting = false;
+    // Check if we have a next element on this level
+    if(currentElement) {
+      // Move to first property of the next element
+      [position, inserting] = getFirstEditableChildElementOf(currentElement);
+    } else {
+      // Move to next element on upper level
+      currentElement = findElementWithKey(state.ast, parentKey(parentKey(position)));
+      [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
+    }
   } else {
     [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
 
     if(!inserting) {
-      position = getFirstEditableChildElementOf(findElementWithKey(state.ast, position));
+      [position, inserting] = getFirstEditableChildElementOf(findElementWithKey(state.ast, position));
     }
   }
 
@@ -61,9 +67,13 @@ const inputNext = (state) => {
 const getFirstEditableChildElementOf = (element) => {
   if(element.type in elementPropertyOrder) {
     const property = elementPropertyOrder[element.type][0];
-    return getFirstEditableChildElementOf(dotProp.get(element, property));
+    const nextElement = dotProp.get(element, property);
+    if(nextElement instanceof Array) {
+      return [joinKeys(element._key, `${property}.0`), true];
+    }
+    return getFirstEditableChildElementOf(nextElement);
   }
-  return element._key;
+  return [element._key, false];
 }
 
 const getNextEditableParentElementOf = (element, ast) => {
@@ -104,5 +114,7 @@ const elementPropertyOrder = {
   ForStatement: ["init", "test", "update", "body"],
   BinaryExpression: ["left", "right"],
   UpdateExpression: ["argument"],
-  BlockStatement: ["body"]
+  BlockStatement: ["body"],
+  ExpressionStatement: ["expression"],
+  AssignmentExpression: ["left", "right"],
 }
