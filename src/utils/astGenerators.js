@@ -20,3 +20,10 @@ export const Identifier = (name) => ({
   "type": "Identifier",
   "name": name
 })
+
+export const BinaryExpression = () => ({
+  "type": "BinaryExpression",
+  "left": { "type": "Missing" },
+  "operator": "+",
+  "right": { "type": "Missing" },
+})

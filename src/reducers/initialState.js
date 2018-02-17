@@ -147,6 +147,7 @@ const initialState = {
       { name: "let", description: "Variable declaration", "element": "VariableDeclaration" },
       { name: "if", description: "Condition", "element": "IfCondition" },
       { name: "function", description: "Function declaration", "element": "FunctionDeclaration" },
+      { name: "binary", description: "Binary expression", element: "BinaryExpression"},
     ],
     filteredSuggestions: [],
     selection: 0,
