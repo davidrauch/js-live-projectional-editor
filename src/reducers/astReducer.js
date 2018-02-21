@@ -1,6 +1,5 @@
 import initialState from './initialState';
 import * as types from '../actions/actionTypes';
-import * as generators from '../utils/astGenerators';
 import {
   assignKeys,
   indexOfKey,
@@ -8,6 +7,7 @@ import {
   findParentOfElementWithKey,
   clearProperties,
 } from '../utils/astUtils';
+import * as elements from '../utils/astElements';
 
 export default function ast(state = initialState.ast, action) {
   switch(action.type) {
@@ -29,11 +29,11 @@ export default function ast(state = initialState.ast, action) {
 }
 
 function add(ast, element, name, position, inserting) {
-  if(!(element in generators)) {
+  if(!(element in elements) || elements[element].generate === null) {
     return ast;
   }
 
-  const newElement = generators[element](name);
+  const newElement = elements[element].generate(name);
 
   if(inserting) {
     const index = indexOfKey(position);

@@ -148,6 +148,8 @@ const initialState = {
       { name: "if", description: "Condition", "element": "IfCondition" },
       { name: "function", description: "Function declaration", "element": "FunctionDeclaration" },
       { name: "binary", description: "Binary expression", element: "BinaryExpression"},
+      { name: "inc", description: "Increment", element: "Increment"},
+      { name: "dec", description: "Decrement", element: "Decrement"},
     ],
     filteredSuggestions: [],
     selection: 0,

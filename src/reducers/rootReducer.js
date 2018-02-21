@@ -10,6 +10,7 @@ import {
   indexOfKey,
   joinKeys,
 } from '../utils/astUtils';
+import * as elements from '../utils/astElements';
 import dotProp from "dot-prop";
 
 export default function root(state = initialState, action) {
@@ -65,8 +66,8 @@ const inputNext = (state) => {
 }
 
 const getFirstEditableChildElementOf = (element) => {
-  if(element.type in elementPropertyOrder) {
-    const property = elementPropertyOrder[element.type][0];
+  if(element.type in elements && elements[element.type].editableFields.length > 0) {
+    const property = elements[element.type].editableFields[0];
     const nextElement = dotProp.get(element, property);
     if(nextElement instanceof Array) {
       return [joinKeys(element._key, `${property}.0`), true];
@@ -94,7 +95,7 @@ const getNextEditableParentElementOf = (element, ast) => {
     }
   }
 
-  const parentProperties = elementPropertyOrder[parentElement.type];
+  const parentProperties = elements[parentElement.type].editableFields;
   const targetIndex = parentProperties.indexOf(searchProperty) + 1;
 
   if(targetIndex >= parentProperties.length) {
@@ -106,15 +107,4 @@ const getNextEditableParentElementOf = (element, ast) => {
     }
     return [newKey, false];
   }
-}
-
-const elementPropertyOrder = {
-  VariableDeclaration: ["declarations.0.id", "declarations.0.init"],
-  VariableDeclarator: ["id", "init"],
-  ForStatement: ["init", "test", "update", "body"],
-  BinaryExpression: ["left", "right"],
-  UpdateExpression: ["argument"],
-  BlockStatement: ["body"],
-  ExpressionStatement: ["expression"],
-  AssignmentExpression: ["left", "right"],
 }
