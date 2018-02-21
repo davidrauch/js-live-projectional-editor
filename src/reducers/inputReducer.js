@@ -24,12 +24,12 @@ export default function input(state = initialState.input, action) {
         filteredSuggestions: filterSuggestions(state.suggestions, ""),
       };
     case types.INPUT_CONFIRM:
-    return {
-      ...state,
-      value: "",
-      selection: 0,
-      filteredSuggestions: filterSuggestions(state.suggestions, ""),
-    };
+      return {
+        ...state,
+        value: "",
+        selection: 0,
+        filteredSuggestions: filterSuggestions(state.suggestions, ""),
+      };
     case types.INPUT_NEXT:
       return {...state, position: {...state.position, index: state.position.index+1}};
     case types.INPUT_HIDE:

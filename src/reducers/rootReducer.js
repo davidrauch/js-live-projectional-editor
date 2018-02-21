@@ -55,6 +55,13 @@ const inputNext = (state) => {
       [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
     }
   } else {
+    // Try to move into the current element
+    let tmpPosition;
+    [tmpPosition, inserting] = getFirstEditableChildElementOf(findElementWithKey(state.ast, position));
+    if(tmpPosition !== position) {
+      return [tmpPosition, inserting];
+    }
+
     [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
 
     if(!inserting) {
