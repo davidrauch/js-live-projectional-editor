@@ -1,4 +1,5 @@
-import {assignKeys} from '../utils/astUtils';
+import {assignKeys} from "../utils/astUtils";
+import * as elements from "../utils/astElements";
 
 const initialAST = assignKeys({
   "type": "Program",
@@ -140,17 +141,19 @@ const initialAST = assignKeys({
   "sourceType": "module"
 });
 
+const initialSuggestions =
+  Object.values(elements)
+    .filter(e => e.shortcut.length > 0 && e.generate !== null)
+    .map(e => ({
+      name: e.shortcut,
+      description: e.description,
+      element: e.name,
+    }))
+
 const initialState = {
   input: {
     value: "",
-    suggestions: [
-      { name: "let", description: "Variable declaration", "element": "VariableDeclaration" },
-      { name: "if", description: "Condition", "element": "IfCondition" },
-      { name: "function", description: "Function declaration", "element": "FunctionDeclaration" },
-      { name: "binary", description: "Binary expression", element: "BinaryExpression"},
-      { name: "inc", description: "Increment", element: "Increment"},
-      { name: "dec", description: "Decrement", element: "Decrement"},
-    ],
+    suggestions: initialSuggestions,
     filteredSuggestions: [],
     selection: 0,
     position: "body.0",
