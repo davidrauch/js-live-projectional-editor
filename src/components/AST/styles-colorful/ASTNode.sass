@@ -1,7 +1,10 @@
 @import ASTColors.sass
 
-=cssContent($content)
+=opaque
   opacity: 0.8
+
+=cssContent($content)
+  +opaque
   z-index: -1
   content: $content
 
@@ -44,6 +47,12 @@
 .Identifier
   +blue
   padding: 0 2px
+
+.Result
+  +opaque
+  +cyan
+  &::before
+    +cssContent(":")
 
 .VariableDeclaration
   +lightOrange

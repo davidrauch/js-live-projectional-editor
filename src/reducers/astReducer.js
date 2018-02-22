@@ -35,6 +35,11 @@ function add(ast, element, name, position, inserting) {
 
   const newElement = elements[element].generate(name);
 
+  // Generators may return null if input was invalid
+  if(newElement === null) {
+    return ast;
+  }
+
   if(inserting) {
     const index = indexOfKey(position);
     const targetArray = findParentOfElementWithKey(ast, position);

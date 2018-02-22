@@ -12,6 +12,12 @@ import {
 } from '../utils/astUtils';
 import * as elements from '../utils/astElements';
 import dotProp from "dot-prop";
+import esCodeGen from "escodegen";
+import esTraverse from "estraverse";
+import {
+  namedTypes as n,
+  builders as b
+} from "../lib/ast-types";
 
 export default function root(state = initialState, action) {
   // Call specialized reducers
@@ -23,17 +29,30 @@ export default function root(state = initialState, action) {
 
   // Root actions that require the entire state
   switch (action.type) {
+    case types.INPUT_NEXT:
     case types.INPUT_CONFIRM:
     let [position, inserting] = inputNext(newState);
-      return {
+      newState = {
         ...newState,
         input: {
           ...newState.input,
           position: position,
           inserting: inserting,
-          inline: !inserting //TODO: This does not work for inline inserting
+          inline: !inserting // TODO: This does not work for inline inserting
         }
       };
+
+      // TODO: Move this somewhere else
+      if(n.Program.check(newState.ast)) {
+        newState = {
+          ...newState,
+          results: runAST(newState.ast)
+        }
+      } else {
+        console.warn("AST was invalid");
+      }
+
+      return newState;
     default:
       return newState;
   }
@@ -115,4 +134,61 @@ const getNextEditableParentElementOf = (element, ast) => {
     }
     return [newKey, false];
   }
+}
+
+const deepClone = (node) => {
+  return JSON.parse(JSON.stringify(node));
+}
+
+const runAST = (ast) => {
+  let workAST = deepClone(ast);
+  addIdentifierTracker(workAST);
+  window.runResults = {};
+  const prependCode = "const __var_logger = (key, value) => window.runResults[key] = [typeof(value), value];";
+  const code = `${prependCode}\n${esCodeGen.generate(workAST)}`;
+  console.log(code);
+  eval(code);
+  return window.runResults;
+}
+
+const addIdentifierTracker = (ast) => {
+  // Track assignments
+  esTraverse.replace(ast, {
+    leave: (node) => {
+      if(node.type === "VariableDeclaration") {
+        const id = node.declarations[0].id;
+        node.declarations.push(
+          b.variableDeclarator(
+            b.identifier("__var_placeholder_" + id.name),
+            b.callExpression(
+              b.identifier("__var_logger"),
+              [
+                b.literal(id._key),
+                b.identifier(id.name)
+              ]
+            )
+          )
+        )
+        return node;
+      } else if(node.type === "ExpressionStatement") {
+        switch(node.expression.type) {
+          case "AssignmentExpression":
+            return b.blockStatement([
+              node,
+              b.expressionStatement(
+                b.callExpression(
+                  b.identifier("__var_logger"),
+                  [
+                    b.literal(node.expression.left._key),
+                    b.identifier(node.expression.left.name)
+                  ]
+                )
+              )
+            ])
+        }
+      }
+
+      return node;
+    }
+  });
 }

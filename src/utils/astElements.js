@@ -14,7 +14,17 @@ export class Identifier extends Element {
 }
 
 export class Literal extends Element {
-  static generate = b.literal
+  static generate = (rawValue) => {
+    // Check for number
+    if(!isNaN(parseFloat(rawValue))) {
+      return b.literal(parseFloat(rawValue));
+    }
+    // Check for string
+    if(rawValue.match(/\"(.*)\"/)) {
+      return b.literal(rawValue.match(/\"(.*)\"/)[1])
+    }
+    return null;
+  }
 }
 
 export class BinaryExpression extends Element {
@@ -104,8 +114,10 @@ export class CallExpression extends Element {
   static shortcut = "call"
   static description = "Function Call"
   static editableFields = ["callee", "arguments"]
-  static generate = () => b.callExpression(
-    missing(), []
+  static generate = () => b.expressionStatement(
+    b.callExpression(
+      missing(), []
+    )
   )
 }
 

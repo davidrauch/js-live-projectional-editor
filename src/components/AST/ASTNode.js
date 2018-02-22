@@ -21,10 +21,18 @@ class ASTNode extends React.Component {
       }
     }
 
+    let result;
+    if(this.props.node._key in this.props.results) {
+      result = renderers.Result(this.props.results[this.props.node._key]);
+    }
+
     return (
-      <span className="ASTNode"
-        onClick={this.onClick.bind(this)} >
+      <span
+        className="ASTNode"
+        onClick={this.onClick.bind(this)}
+        key={this.props.node._key} >
         {content}
+        {result}
       </span>
     )
   }
@@ -43,6 +51,7 @@ class ASTNode extends React.Component {
 const mapStateToProps = (state) => ({
   inputPosition: state.input.position,
   inputInserting: state.input.inserting,
+  results: state.results
 })
 
 const mapDispatchToProps = (dispatch) => ({

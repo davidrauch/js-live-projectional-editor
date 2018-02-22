@@ -53,11 +53,16 @@ class InputBar extends React.Component {
       case " ":
       case "Tab":
         event.preventDefault();
-        this.props.inputActions.confirm(
-          this.props.filteredSuggestions[this.props.selection],
-          this.props.position,
-          this.props.inserting,
-        );
+        const selection = this.props.filteredSuggestions[this.props.selection];
+        if(selection) {
+          this.props.inputActions.confirm(
+            selection,
+            this.props.position,
+            this.props.inserting,
+          );
+        } else {
+          this.props.inputActions.next();
+        }
         break;
       case "Escape":
         event.preventDefault();

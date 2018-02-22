@@ -60,6 +60,9 @@ export const ForStatement = (node) =>
 export const Identifier = (node) =>
   GenericInline(node.name, node.type)
 
+export const Result = (result) =>
+  GenericInline(`${result[0]}(${result[1]})`, "Result")
+
 export const Literal = (node) =>
   GenericInline(node.value, node.type)
 
@@ -90,8 +93,8 @@ export const CallExpression = (node) =>
     <span className="arguments"><ASTList node={node} childrenPath="arguments" inline={true}/></span>
   </span>
 
-  export const MemberExpression = (node) =>
-    <span className="MemberExpression">
-      <span className="object"><ASTNode node={node.object}/></span>
-      <span className="property"><ASTNode node={node.property}/></span>
-    </span>
+export const MemberExpression = (node) =>
+  <span className="MemberExpression">
+    <span className="object"><ASTNode node={node.object}/></span>
+    <span className="property"><ASTNode node={node.property}/></span>
+  </span>

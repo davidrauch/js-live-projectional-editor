@@ -135,46 +135,44 @@ const initialAST = assignKeys({
             }
           },
           {
-            callee: {
-              object: {
-                name: 'console',
+            "type": "ExpressionStatement",
+            "expression": {
+              callee: {
+                object: {
+                  name: 'console',
+                  loc: null,
+                  type: 'Identifier',
+                  comments: null,
+                  optional: false,
+                  typeAnnotation: null,
+                },
+                property: {
+                  name: 'log',
+                  loc: null,
+                  type: 'Identifier',
+                  comments: null,
+                  optional: false,
+                  typeAnnotation: null,
+                },
+                computed: false,
                 loc: null,
-                type: 'Identifier',
+                type: 'MemberExpression',
                 comments: null,
-                optional: false,
-                typeAnnotation: null,
-                _key: 'body.3.callee.object'
               },
-              property: {
-                name: 'log',
-                loc: null,
-                type: 'Identifier',
-                comments: null,
-                optional: false,
-                typeAnnotation: null,
-                _key: 'body.3.callee.property'
-              },
-              computed: false,
+              arguments: [
+                {
+                  name: 'i',
+                  loc: null,
+                  type: 'Identifier',
+                  comments: null,
+                  optional: false,
+                  typeAnnotation: null,
+                }
+              ],
               loc: null,
-              type: 'MemberExpression',
+              type: 'CallExpression',
               comments: null,
-              _key: 'body.3.callee'
-            },
-            arguments: [
-              {
-                name: 'i',
-                loc: null,
-                type: 'Identifier',
-                comments: null,
-                optional: false,
-                typeAnnotation: null,
-                _key: 'body.3.arguments.0'
-              }
-            ],
-            loc: null,
-            type: 'CallExpression',
-            comments: null,
-            _key: 'body.3'
+            }
           }
         ]
       }
@@ -203,6 +201,7 @@ const initialState = {
     inline: false,
   },
   ast: initialAST,
+  results: {}
 };
 
 export default initialState;
