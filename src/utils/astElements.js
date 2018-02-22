@@ -1,14 +1,4 @@
-/*
-import types from "ast-types";
-
-const def = types.Type.def;
-
-def("Missing").bases("Node");
-
-types.finalize();
-
-const b = types.builders;
-*/
+import {builders as b} from "../lib/ast-types";
 
 const missing = () => Object.assign({}, {"type": "Missing"})
 
@@ -20,28 +10,16 @@ class Element {
 }
 
 export class Identifier extends Element {
-  static generate = (name) => ({
-    "type": "Identifier",
-    "name": name
-  })
+  static generate = b.identifier
 }
 
 export class Literal extends Element {
-  static generate = (value) => ({
-    "type": "Literal",
-    "value": value,
-    "raw": value
-  })
+  static generate = b.literal
 }
 
 export class BinaryExpression extends Element {
   static editableFields = ["left", "right"]
-  static generate = (operator) => ({
-    "type": "BinaryExpression",
-    "left": missing(),
-    "operator": operator,
-    "right": missing(),
-  })
+  static generate = (operator) => b.binaryExpression(operator, missing(), missing())
 }
 
 export class Addition extends BinaryExpression {
@@ -72,17 +50,10 @@ export class VariableDeclaration extends Element {
   static shortcut = "let"
   static description = "Variable Declaration"
   static editableFields = ["declarations.0.id", "declarations.0.init"]
-  static generate = () => ({
-    "type": "VariableDeclaration",
-    "declarations": [
-      {
-        "type": "VariableDeclarator",
-        "id": missing(),
-        "init": missing(),
-      }
-    ],
-    "kind": "let"
-  })
+  static generate = () => b.variableDeclaration(
+    "let",
+    [b.variableDeclarator(missing(), missing())]
+  )
 }
 
 export class VariableDeclarator extends Element {
@@ -93,26 +64,16 @@ export class ForStatement extends Element {
   static shortcut = "for"
   static description = "For Loop"
   static editableFields = ["init", "test", "update", "body"]
-  static generate = () => ({
-    "type": "ForStatement",
-    "init": missing(),
-    "test": missing(),
-    "update": missing(),
-    "body": {
-      "type": "BlockStatement",
-      "body": []
-    }
-  })
+  static generate = () => b.forStatement(
+    missing(), missing(), missing(), b.blockStatement([])
+  )
 }
 
 export class UpdateExpression extends Element {
   static editableFields = ["argument"]
-  static generate = (operator, prefix=false) => ({
-    "type": "UpdateExpression",
-    "operator": operator,
-    "argument": missing(),
-    "prefix": prefix,
-  })
+  static generate = (operator, prefix=false) => b.updateExpression(
+    operator, missing(), prefix
+  )
 }
 
 export class Increment extends UpdateExpression {
