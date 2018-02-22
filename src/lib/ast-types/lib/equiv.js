@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = function (fork) {
     var types = fork.use(require('../lib/types'));
     var getFieldNames = types.getFieldNames;
@@ -181,6 +182,6 @@ module.exports = function (fork) {
 
         return false;
     }
-    
+
     return astNodesAreEquivalent;
 };

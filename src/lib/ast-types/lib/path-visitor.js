@@ -1,3 +1,4 @@
+/* eslint-disable */
 var hasOwn = Object.prototype.hasOwnProperty;
 
 module.exports = function (fork) {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = function (fork) {
     var types = fork.use(require("../lib/types"));
     var Type = types.Type;

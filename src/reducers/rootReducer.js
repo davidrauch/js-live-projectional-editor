@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 import initialState from './initialState';
 import input from './inputReducer';
 import ast from './astReducer';
@@ -31,7 +32,7 @@ export default function root(state = initialState, action) {
   switch (action.type) {
     case types.INPUT_NEXT:
     case types.INPUT_CONFIRM:
-    let [position, inserting] = inputNext(newState);
+      let [position, inserting] = inputNext(newState);
       newState = {
         ...newState,
         input: {
@@ -195,20 +196,19 @@ const addIdentifierTracker = (ast) => {
         )
         return node;
       } else if(node.type === "ExpressionStatement") {
-        switch(node.expression.type) {
-          case "AssignmentExpression":
-            return b.blockStatement([
-              node,
-              b.expressionStatement(
-                b.callExpression(
-                  b.identifier("__var_logger"),
-                  [
-                    b.literal(node.expression.left._key),
-                    b.identifier(node.expression.left.name)
-                  ]
-                )
+        if(node.expression.type === "AssignmentExpression") {
+          return b.blockStatement([
+            node,
+            b.expressionStatement(
+              b.callExpression(
+                b.identifier("__var_logger"),
+                [
+                  b.literal(node.expression.left._key),
+                  b.identifier(node.expression.left.name)
+                ]
               )
-            ])
+            )
+          ]);
         }
       }
 

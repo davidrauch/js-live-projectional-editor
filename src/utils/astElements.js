@@ -15,13 +15,16 @@ export class Identifier extends Element {
 
 export class Literal extends Element {
   static generate = (rawValue) => {
+    let parsedValue;
     // Check for number
-    if(!isNaN(parseFloat(rawValue))) {
-      return b.literal(parseFloat(rawValue));
+    parsedValue = parseFloat(rawValue);
+    if(!isNaN(parsedValue)) {
+      return b.literal(parsedValue);
     }
     // Check for string
-    if(rawValue.match(/\"(.*)\"/)) {
-      return b.literal(rawValue.match(/\"(.*)\"/)[1])
+    parsedValue = rawValue.match(/"(.*)"/);
+    if(parsedValue.length > 1) {
+      return b.literal(parsedValue[1]);
     }
     return null;
   }

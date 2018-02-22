@@ -1,3 +1,4 @@
+/* eslint-disable */
 var Ap = Array.prototype;
 var slice = Ap.slice;
 var map = Ap.map;

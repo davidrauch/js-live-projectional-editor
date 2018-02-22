@@ -50,11 +50,12 @@ class InputBar extends React.Component {
         break;
       case "Space":
       case " ":
-        if(this.props.value.match(/(\/\/|\").*/)) {
-          break;
-        }
       case "Enter":
       case "Tab":
+        // Allow space in comments and strings
+        if(["Space", " "].indexOf(event.key) !== -1 && this.props.value.match(/(\/\/|").*/)) {
+          break;
+        }
         event.preventDefault();
         const selection = this.props.filteredSuggestions[this.props.selection];
         if(selection) {

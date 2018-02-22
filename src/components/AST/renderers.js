@@ -64,7 +64,7 @@ export const Result = (result) =>
   GenericInline(`${result[0]}(${result[1]})`, "Result")
 
 export const Literal = (node) =>
-  GenericInline(node.value, node.type)
+  GenericInline(typeof(node.value) === "string" ? `"${node.value}"` : node.value, node.type)
 
 export const VariableDeclaration = (node) =>
   <span className="VariableDeclaration">

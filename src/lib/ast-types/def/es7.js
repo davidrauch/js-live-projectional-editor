@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = function (fork) {
   fork.use(require('./es6'));
 
