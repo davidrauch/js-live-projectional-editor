@@ -1,9 +1,9 @@
 @import ASTColors.sass
 
-=cssContent
+=cssContent($content)
   opacity: 0.8
   z-index: -1
-
+  content: $content
 
 .ASTNode
   > *
@@ -14,6 +14,10 @@
     border-color: transparent
     background-color: rgba(255, 255, 255, 0.3)
     cursor: pointer
+
+  .ExpressionStatement
+    border-width: 0
+    background-color: transparent
 
   &:hover
     border-color: rgba(255, 255, 255, 0.3)
@@ -27,14 +31,15 @@
   padding-left: 1em
   overflow: auto
 
+.InlineBody
+  display: inline
+
 .BinaryExpression
   &::before
-    +cssContent
-    content: "("
+    +cssContent("(")
 
   &::after
-    +cssContent
-    content: ")"
+    +cssContent(")")
 
 .Identifier
   +blue
@@ -50,15 +55,24 @@
   +purple
   >.init
     &::before
-      +cssContent
-      content: "for("
+      +cssContent("for(")
     &::after
-      +cssContent
-      content: ";"
+      +cssContent(";")
   >.update
     &::before
-      +cssContent
-      content: ";"
+      +cssContent(";")
     &::after
-      +cssContent
-      content: ")"
+      +cssContent(")")
+
+.CallExpression
+  +green
+  >.arguments
+    &::before
+      +cssContent("(")
+    &::after
+      +cssContent(")")
+
+.MemberExpression
+  >.object
+    &::after
+      +cssContent(".")

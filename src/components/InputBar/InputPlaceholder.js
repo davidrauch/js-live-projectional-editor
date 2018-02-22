@@ -8,16 +8,13 @@ class InputPlaceholder extends React.Component {
 
   render = () =>
     <div
-      className="InputPlaceholder clickTarget"
+      className={"InputPlaceholder clickTarget " + (this.props.inline ? "inline" : "")}
       onClick={this.onClick}>
-      <div className="handle">
-        +
-      </div>
     </div>
 
   onClick = (event) => {
     event.stopPropagation();
-    return this.props.inputActions.positionChanged(this.props.position, true);
+    return this.props.inputActions.positionChanged(this.props.position, true, this.props.inline);
   }
 
 }

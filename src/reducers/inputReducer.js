@@ -19,6 +19,7 @@ export default function input(state = initialState.input, action) {
         ...state,
         position: action.newPosition,
         inserting: action.isInserting,
+        inline: action.isInline,
         value: "",
         selection: 0,
         filteredSuggestions: filterSuggestions(state.suggestions, ""),

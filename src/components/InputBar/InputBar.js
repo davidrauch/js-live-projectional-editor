@@ -76,6 +76,7 @@ function mapStateToProps(state) {
     selection: state.input.selection,
     position: state.input.position,
     inserting: state.input.inserting,
+    inline: state.input.inline
   };
 }
 

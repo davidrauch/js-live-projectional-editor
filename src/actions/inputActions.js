@@ -20,10 +20,11 @@ export const confirm = (selection, position, inserting) => ({
   inserting: inserting,
 })
 
-export const positionChanged = (newPosition, isInserting) => ({
+export const positionChanged = (newPosition, isInserting, isInline) => ({
   type: types.INPUT_POSITION_CHANGED,
   newPosition: newPosition,
   isInserting: isInserting,
+  isInline: isInline,
 })
 
 export const next = () => ({

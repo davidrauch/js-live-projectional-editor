@@ -24,13 +24,26 @@ class ASTList extends React.Component {
     for(let i = 0; i < childNodes.length; i++) {
       const child = childNodes[i];
       children.push(
-        <InputPlaceholder key={guid()} position={joinKeys(myPosition, i)}/>,
-        <div className="ASTBlock" key={child._key}>
-          <ASTNode node={child} />
-        </div>
+        <InputPlaceholder
+          key={guid()}
+          position={joinKeys(myPosition, i)}
+          inline={this.props.inline}
+        />,
+        this.props.inline ?
+          <ASTNode node={child} key={child._key}/>
+          :
+          <div className="ASTBlock" key={child._key}>
+            <ASTNode node={child} />
+          </div>
       )
     }
-    children.push(<InputPlaceholder key={guid()} position={joinKeys(myPosition, childNodes.length)}/>);
+    children.push(
+      <InputPlaceholder
+        key={guid()}
+        position={joinKeys(myPosition, childNodes.length)}
+        inline={this.props.inline}
+      />
+    );
 
     // Show InputBar if necessary
     if(parentKey(this.props.inputPosition) === myPosition && this.props.inputInserting) {
@@ -38,7 +51,7 @@ class ASTList extends React.Component {
     }
 
     return (
-      <div className="GenericBody">
+      <div className={this.props.inline ? "InlineBody" : "GenericBody"}>
         {children}
       </div>
     )

@@ -31,6 +31,7 @@ export default function root(state = initialState, action) {
           ...newState.input,
           position: position,
           inserting: inserting,
+          inline: !inserting //TODO: This does not work for inline inserting
         }
       };
     default:

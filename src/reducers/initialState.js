@@ -95,7 +95,7 @@ const initialAST = assignKeys({
         },
         "right": {
           "type": "Identifier",
-          "name": "b"
+          "name": "a"
         }
       },
       "update": {
@@ -133,6 +133,48 @@ const initialAST = assignKeys({
                 }
               }
             }
+          },
+          {
+            callee: {
+              object: {
+                name: 'console',
+                loc: null,
+                type: 'Identifier',
+                comments: null,
+                optional: false,
+                typeAnnotation: null,
+                _key: 'body.3.callee.object'
+              },
+              property: {
+                name: 'log',
+                loc: null,
+                type: 'Identifier',
+                comments: null,
+                optional: false,
+                typeAnnotation: null,
+                _key: 'body.3.callee.property'
+              },
+              computed: false,
+              loc: null,
+              type: 'MemberExpression',
+              comments: null,
+              _key: 'body.3.callee'
+            },
+            arguments: [
+              {
+                name: 'i',
+                loc: null,
+                type: 'Identifier',
+                comments: null,
+                optional: false,
+                typeAnnotation: null,
+                _key: 'body.3.arguments.0'
+              }
+            ],
+            loc: null,
+            type: 'CallExpression',
+            comments: null,
+            _key: 'body.3'
           }
         ]
       }
@@ -158,6 +200,7 @@ const initialState = {
     selection: 0,
     position: "body.0",
     inserting: true,
+    inline: false,
   },
   ast: initialAST,
 };

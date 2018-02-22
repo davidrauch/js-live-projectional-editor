@@ -1,0 +1,62 @@
+.inputBar
+  display: block
+  float: left
+  clear: left
+  border: 1px solid #333
+  border-radius: 3px
+  width: 200px
+  overflow: visible
+  margin-top: 2px
+  margin-bottom: 2px
+
+  &.inline
+    display: inline-block
+    float: none
+    clear: none
+    width: 100px
+    margin-top: 0px
+    margin-bottom: 0px
+
+  >.inputContainer
+  background-color: #333
+  padding: 2px
+
+  input
+    display: block
+    border: 0
+    font-family: inherit
+    font-size: 12pt
+    background-color: #333
+    color: white
+    width: 95%
+
+    &:focus
+    outline-width: 0
+
+.suggestionList
+  position: absolute
+  z-index: 9
+  font-size: 10pt
+  background-color: rgba(#333, 0.8)
+  list-style: none
+  padding: 3px 0 0 0
+  margin: 0
+  max-height: 5em
+  overflow-x: hidden
+  overflow-y: scroll
+  color: white
+  border-bottom-left-radius: 3px
+  border-bottom-right-radius: 3px
+
+  >li
+    padding: 2px
+    >.name
+      margin-right: 1em
+    >.description
+      color: #ddd
+
+  >li.selected
+    background-color: rgb(82, 110, 122)
+    border-radius: 3px
+    >.description
+      color: #eee

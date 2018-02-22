@@ -12,7 +12,7 @@ class ASTNode extends React.Component {
     let content;
 
     if(this.props.inputPosition === this.props.node._key && !this.props.inputInserting) {
-      return <InputBar key="inputBar" inline={true}/>;
+      return <InputBar key="inputBar"/>;
     } else if(this.props.node) {
       if(this.props.node.type in renderers) {
         content = renderers[this.props.node.type](this.props.node);
@@ -35,7 +35,7 @@ class ASTNode extends React.Component {
       return this.props.inputActions.hide();
     }
 
-    return this.props.inputActions.positionChanged(this.props.node._key, false);
+    return this.props.inputActions.positionChanged(this.props.node._key, false, true);
   }
 
 }

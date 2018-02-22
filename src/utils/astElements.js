@@ -99,3 +99,21 @@ export class ExpressionStatement extends Element {
 export class AssignmentExpression extends Element {
   static editableFields = ["left", "right"]
 }
+
+export class CallExpression extends Element {
+  static shortcut = "call"
+  static description = "Function Call"
+  static editableFields = ["callee", "arguments"]
+  static generate = () => b.callExpression(
+    missing(), []
+  )
+}
+
+export class MemberExpression extends Element {
+  static shortcut = "mem"
+  static description = "Member Expression"
+  static editableFields = ["object", "property"]
+  static generate = () => b.memberExpression(
+    missing(), missing()
+  )
+}
