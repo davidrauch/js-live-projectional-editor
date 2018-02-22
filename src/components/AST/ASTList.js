@@ -17,7 +17,7 @@ class ASTList extends React.Component {
 
   render = () => {
     const childNodes = dotProp.get(this.props.node, this.props.childrenPath);
-    const myPosition = joinKeys(this.props.node._key, this.props.childrenPath);
+    const myPosition = joinKeys(this.props.node._path, this.props.childrenPath);
 
     // Generate list of children
     let children = [];
@@ -30,9 +30,9 @@ class ASTList extends React.Component {
           inline={this.props.inline}
         />,
         this.props.inline ?
-          <ASTNode node={child} key={child._key}/>
+          <ASTNode node={child} key={child._path}/>
           :
-          <div className="ASTBlock" key={child._key}>
+          <div className="ASTBlock" key={child._path}>
             <ASTNode node={child} />
           </div>
       )

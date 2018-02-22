@@ -11,7 +11,7 @@ class ASTNode extends React.Component {
   render = () => {
     let content;
 
-    if(this.props.inputPosition === this.props.node._key && !this.props.inputInserting) {
+    if(this.props.inputPosition === this.props.node._path && !this.props.inputInserting) {
       return <InputBar key="inputBar"/>;
     } else if(this.props.node) {
       if(this.props.node.type in renderers) {
@@ -22,15 +22,15 @@ class ASTNode extends React.Component {
     }
 
     let result = null;
-    if(this.props.node._key in this.props.results) {
-      result = renderers.Result(this.props.results[this.props.node._key]);
+    if(this.props.node._path in this.props.results) {
+      result = renderers.Result(this.props.results[this.props.node._path]);
     }
 
     return (
       <span
         className={"ASTNode " + (result ? "multipart" : "")}
         onClick={this.onClick.bind(this)}
-        key={this.props.node._key} >
+        key={this.props.node._path} >
         {content}
         {result}
       </span>
@@ -43,7 +43,7 @@ class ASTNode extends React.Component {
       return this.props.inputActions.hide();
     }
 
-    return this.props.inputActions.positionChanged(this.props.node._key, false, true);
+    return this.props.inputActions.positionChanged(this.props.node._path, false, true);
   }
 
 }

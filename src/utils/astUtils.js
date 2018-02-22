@@ -54,7 +54,7 @@ export const assignKeys = (currentElement, key="") => {
   }
 
   // Assign GUID
-  currentElement._key = key;
+  currentElement._path = key;
 
   // Process all children
   for(let property in currentElement) {

@@ -108,16 +108,16 @@ const getFirstEditableChildElementOf = (element) => {
     const property = elements[element.type].editableFields[0];
     const nextElement = dotProp.get(element, property);
     if(nextElement instanceof Array) {
-      return [joinKeys(element._key, `${property}.0`), true];
+      return [joinKeys(element._path, `${property}.0`), true];
     }
     return getFirstEditableChildElementOf(nextElement);
   }
-  return [element._key, false];
+  return [element._path, false];
 }
 
 const getNextEditableParentElementOf = (element, ast) => {
-  let searchProperty = propertyOfKey(element._key);
-  const keyOfParent = parentKey(element._key);
+  let searchProperty = propertyOfKey(element._path);
+  const keyOfParent = parentKey(element._path);
   let parentElement = findElementWithKey(ast, keyOfParent);
 
   if(parentElement instanceof Array) {
@@ -127,7 +127,7 @@ const getNextEditableParentElementOf = (element, ast) => {
       parentElement = findParentOfElementWithKey(ast, keyOfParent);
       searchProperty = "declarations.0.init";
     } else {
-      const currentIndex = indexOfKey(element._key);
+      const currentIndex = indexOfKey(element._path);
       const newPosition = joinKeys(keyOfParent, currentIndex+1);
       return [newPosition, true];
     }
@@ -139,7 +139,7 @@ const getNextEditableParentElementOf = (element, ast) => {
   if(targetIndex >= parentProperties.length) {
     return getNextEditableParentElementOf(parentElement, ast);
   } else {
-    const newKey = joinKeys(parentElement._key, parentProperties[targetIndex]);
+    const newKey = joinKeys(parentElement._path, parentProperties[targetIndex]);
     if(findElementWithKey(ast, newKey) instanceof Array) {
       return [joinKeys(newKey, 0), true];
     }
@@ -188,7 +188,7 @@ const addIdentifierTracker = (ast) => {
             b.callExpression(
               b.identifier("__var_logger"),
               [
-                b.literal(id._key),
+                b.literal(id._path),
                 b.identifier(id.name)
               ]
             )
@@ -203,7 +203,7 @@ const addIdentifierTracker = (ast) => {
               b.callExpression(
                 b.identifier("__var_logger"),
                 [
-                  b.literal(node.expression.left._key),
+                  b.literal(node.expression.left._path),
                   b.identifier(node.expression.left.name)
                 ]
               )
