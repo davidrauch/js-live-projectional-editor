@@ -576,6 +576,7 @@ module.exports = function () {
                         throw new Error(message);
                     }
 
+                    /*
                     if (!type.check(value)) {
                         throw new Error(
                           shallowStringify(value) +
@@ -583,6 +584,7 @@ module.exports = function () {
                           " of type " + self.typeName
                         );
                     }
+                    */
 
                     // TODO Could attach getters and setters here to enforce
                     // dynamic type safety.
