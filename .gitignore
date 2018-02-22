@@ -23,3 +23,6 @@ yarn.lock
 
 # flow
 /flow-typed
+
+# CSS is generated from scss
+*.css
