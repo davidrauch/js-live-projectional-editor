@@ -25,6 +25,15 @@
   &:hover
     border-color: rgba(255, 255, 255, 0.3)
 
+  &.multipart>*
+    border-radius: 0px
+    &:first-child
+      border-top-left-radius: 3px
+      border-bottom-left-radius: 3px
+    &:last-child
+      border-top-right-radius: 3px
+      border-bottom-right-radius: 3px
+
 .ASTBlock
   display: block
   float: left
@@ -50,7 +59,7 @@
 
 .Result
   +opaque
-  +cyan
+  +green
   &::before
     +cssContent(":")
 
@@ -74,7 +83,6 @@
       +cssContent(")")
 
 .CallExpression
-  +green
   >.arguments
     &::before
       +cssContent("(")
@@ -85,3 +93,9 @@
   >.object
     &::after
       +cssContent(".")
+
+.Comment
+  +opaque
+  +green
+  >.text::before
+    +cssContent("//")

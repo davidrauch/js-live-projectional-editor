@@ -196,7 +196,7 @@ const initialState = {
     suggestions: initialSuggestions,
     filteredSuggestions: [],
     selection: 0,
-    position: "body.0",
+    position: "",
     inserting: true,
     inline: false,
   },

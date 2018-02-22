@@ -94,7 +94,12 @@ export const CallExpression = (node) =>
   </span>
 
 export const MemberExpression = (node) =>
-  <span className="MemberExpression">
+  <span className={node.type}>
     <span className="object"><ASTNode node={node.object}/></span>
     <span className="property"><ASTNode node={node.property}/></span>
+  </span>
+
+export const Comment = (node) =>
+  <span className={node.type}>
+    <span className="text">{node.text}</span>
   </span>

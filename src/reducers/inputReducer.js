@@ -1,5 +1,6 @@
-import initialState from './initialState';
-import * as types from '../actions/actionTypes';
+import initialState from "./initialState";
+import * as types from "../actions/actionTypes";
+import {textCanBeElement} from "../utils/astUtils";
 
 export default function input(state = initialState.input, action) {
   switch (action.type) {
@@ -33,7 +34,7 @@ export default function input(state = initialState.input, action) {
         filteredSuggestions: filterSuggestions(state.suggestions, ""),
       };
     case types.INPUT_HIDE:
-      return {...state, position: "body.0", inserting: true, inline: false}
+      return {...state, position: "", inserting: true, inline: false}
     default:
       return state;
   }
@@ -50,12 +51,14 @@ const filterSuggestions = (suggestions, filter) => {
     suggestion.description.toLowerCase().indexOf(filter.toLowerCase()) !== -1
   )
 
-  // Add Identifier and Literal options
+  // Add Identifier, Literal and Comment options
   const insertIndex = suggestions.length > 0 ? 1 : 0;
   const insertSuggestions = [
     { name: filter, description: "Identifier", element: "Identifier" },
     { name: filter, description: "Literal", element: "Literal" },
-  ]
+    { name: filter, description: "Comment", element: "Comment" },
+  ].filter(e => textCanBeElement(filter, e.element));
+
   filteredSuggestions.splice(insertIndex, 0, ...insertSuggestions);
 
   return filteredSuggestions;

@@ -21,14 +21,14 @@ class ASTNode extends React.Component {
       }
     }
 
-    let result;
+    let result = null;
     if(this.props.node._key in this.props.results) {
       result = renderers.Result(this.props.results[this.props.node._key]);
     }
 
     return (
       <span
-        className="ASTNode"
+        className={"ASTNode " + (result ? "multipart" : "")}
         onClick={this.onClick.bind(this)}
         key={this.props.node._key} >
         {content}

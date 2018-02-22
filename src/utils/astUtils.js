@@ -84,3 +84,16 @@ export const clearProperties = (node) => {
     delete node[key];
   }
 }
+
+export const textCanBeElement = (text, element) => {
+  switch(element) {
+    case "Comment":
+      return text.indexOf("//") === 0;
+    case "Literal":
+      return !isNaN(parseFloat(text)) || text.indexOf("\"") === 0;
+    case "Identifier":
+      return text.indexOf("//") !== 0 && isNaN(parseFloat(text)) && text.indexOf("\"") !== 0;
+    default:
+      return false;
+  }
+}

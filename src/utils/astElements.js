@@ -129,3 +129,10 @@ export class MemberExpression extends Element {
     missing(), missing()
   )
 }
+
+export class Comment extends Element {
+  static generate = (text) => ({
+    type: "Comment",
+    text: text.match(/\/\/ *(.*)/)[1]
+  })
+}

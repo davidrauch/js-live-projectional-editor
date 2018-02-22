@@ -48,9 +48,12 @@ class InputBar extends React.Component {
         event.preventDefault();
         this.props.inputActions.prevSuggestion();
         break;
-      case "Enter":
       case "Space":
       case " ":
+        if(this.props.value.match(/(\/\/|\").*/)) {
+          break;
+        }
+      case "Enter":
       case "Tab":
         event.preventDefault();
         const selection = this.props.filteredSuggestions[this.props.selection];

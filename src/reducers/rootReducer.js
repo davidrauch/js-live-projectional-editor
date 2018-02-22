@@ -43,10 +43,14 @@ export default function root(state = initialState, action) {
       };
 
       // TODO: Move this somewhere else
-      if(n.Program.check(newState.ast)) {
+      let astCopy = deepClone(newState.ast);
+      removeComments(astCopy);
+
+      const astValid = n.Program.check(astCopy, true);
+      if(astValid) {
         newState = {
           ...newState,
-          results: runAST(newState.ast)
+          results: runAST(astCopy)
         }
       } else {
         console.warn("AST was invalid");
@@ -68,7 +72,13 @@ const inputNext = (state) => {
     // Check if we have a next element on this level
     if(currentElement) {
       // Move to first property of the next element
-      [position, inserting] = getFirstEditableChildElementOf(currentElement);
+      let tmpPosition, tmpInserting;
+      [tmpPosition, tmpInserting] = getFirstEditableChildElementOf(currentElement);
+      if(tmpPosition === position) {
+        [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
+      } else {
+        [position, inserting] = [tmpPosition, tmpInserting];
+      }
     } else {
       // Move to next element on upper level
       currentElement = findElementWithKey(state.ast, parentKey(parentKey(position)));
@@ -140,12 +150,26 @@ const deepClone = (node) => {
   return JSON.parse(JSON.stringify(node));
 }
 
+const removeComments = (ast) => {
+  esTraverse.replace(ast, {
+    enter: function (node) {
+      if(node.type === "Comment") {
+        this.remove();
+      }
+    },
+    // Extending the existing traversing rules.
+    keys: {
+        Comment: ["text"],
+        Missing: [],
+    }
+  });
+}
+
 const runAST = (ast) => {
-  let workAST = deepClone(ast);
-  addIdentifierTracker(workAST);
+  addIdentifierTracker(ast);
   window.runResults = {};
   const prependCode = "const __var_logger = (key, value) => window.runResults[key] = [typeof(value), value];";
-  const code = `${prependCode}\n${esCodeGen.generate(workAST)}`;
+  const code = `${prependCode}\n${esCodeGen.generate(ast)}`;
   console.log(code);
   eval(code);
   return window.runResults;

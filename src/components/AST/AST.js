@@ -7,6 +7,10 @@ import ASTNode from './ASTNode';
 
 class AST extends React.Component {
 
+  componentWillMount() {
+    console.log("AST will mount");
+  }
+
   render() {
     return (
       <div className="ast">
