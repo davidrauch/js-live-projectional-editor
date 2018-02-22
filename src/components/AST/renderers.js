@@ -34,7 +34,7 @@ export const GenericContainer = (child, type, className="") =>
   </span>
 
 export const Missing = (node) =>
-  <div className="missing hue-5-2">?!</div>
+  <div className="Missing">?!</div>
 
 export const AssignmentExpression = (node) =>
   <span className="AssignmentExpression">
@@ -50,21 +50,21 @@ export const ExpressionStatement = (node) =>
   GenericContainer(node.expression, node.type)
 
 export const ForStatement = (node) =>
-  <span className="ForStatement hue-3">
-    <ASTNode node={node.init} />
-    <ASTNode node={node.test} />
-    <ASTNode node={node.update} />
+  <span className="ForStatement">
+    <span className="init"><ASTNode node={node.init} /></span>
+    <span className="test"><ASTNode node={node.test} /></span>
+    <span className="update"><ASTNode node={node.update} /></span>
     <ASTList node={node} childrenPath="body.body" />
   </span>
 
 export const Identifier = (node) =>
-  GenericInline(node.name, node.type, "hue-2")
+  GenericInline(node.name, node.type)
 
 export const Literal = (node) =>
   GenericInline(node.value, node.type)
 
 export const VariableDeclaration = (node) =>
-  <span className="VariableDeclaration hue-6-2">
+  <span className="VariableDeclaration">
     {node.kind} <ASTNode node={node.declarations[0].id} /> = <ASTNode node={node.declarations[0].init} />
   </span>
 

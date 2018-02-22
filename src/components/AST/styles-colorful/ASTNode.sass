@@ -1,0 +1,64 @@
+@import ASTColors.sass
+
+=cssContent
+  opacity: 0.8
+  z-index: -1
+
+
+.ASTNode
+  > *
+    border-radius: 3px
+    display: inline-block
+    border-width: 1px
+    border-style: solid
+    border-color: transparent
+    background-color: rgba(255, 255, 255, 0.3)
+    cursor: pointer
+
+  &:hover
+    border-color: rgba(255, 255, 255, 0.3)
+
+.ASTBlock
+  display: block
+  float: left
+  clear: left
+
+.GenericBody
+  padding-left: 1em
+  overflow: auto
+
+.BinaryExpression
+  &::before
+    +cssContent
+    content: "("
+
+  &::after
+    +cssContent
+    content: ")"
+
+.Identifier
+  +blue
+  padding: 0 2px
+
+.VariableDeclaration
+  +lightOrange
+
+.Missing
+  +darkRed
+
+.ForStatement
+  +purple
+  >.init
+    &::before
+      +cssContent
+      content: "for("
+    &::after
+      +cssContent
+      content: ";"
+  >.update
+    &::before
+      +cssContent
+      content: ";"
+    &::after
+      +cssContent
+      content: ")"

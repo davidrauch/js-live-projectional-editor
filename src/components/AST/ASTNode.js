@@ -5,7 +5,6 @@ import * as renderers from './renderers';
 import React from 'react';
 import InputBar from '../InputBar/InputBar';
 import './styles-colorful/ASTNode.css';
-import './styles-colorful/ASTColors.css';
 
 class ASTNode extends React.Component {
 
