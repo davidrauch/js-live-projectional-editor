@@ -62,7 +62,7 @@ const isASTNode = (immutableNode) =>
  * Recurvisely calls replaceCallback for the given node and all children,
  * replacing the current node with whatever the callback returns
  */
-const deepReplaceNodes = (mutableNode, replaceCallback) =>
+export const deepReplaceNodes = (mutableNode, replaceCallback) =>
   esTraverse.replace(mutableNode, {
     enter: (currentMutableNode) => replaceCallback(currentMutableNode),
     keys: customASTNodes

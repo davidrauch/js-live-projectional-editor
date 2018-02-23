@@ -22,8 +22,8 @@ class ASTNode extends React.Component {
     }
 
     let result = null;
-    if(this.props.node._path in this.props.results) {
-      result = renderers.Result(this.props.results[this.props.node._path]);
+    if(this.props.node._key in this.props.results) {
+      result = renderers.Result(this.props.results[this.props.node._key]);
     }
 
     return (

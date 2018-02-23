@@ -6,6 +6,7 @@ import {
   findElementWithPath,
   findParentOfElementWithPath,
   clearProperties,
+  deepAssignKeys,
 } from '../utils/astUtils';
 import * as elements from '../utils/astElements';
 
@@ -35,7 +36,7 @@ function add(ast, element, name, position, inserting) {
     return ast;
   }
 
-  const newElement = elements[element].generate(name);
+  const newElement = deepAssignKeys(elements[element].generate(name));
 
   // Generators may return null if input was invalid
   if(newElement === null) {
