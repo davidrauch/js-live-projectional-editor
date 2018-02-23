@@ -2,7 +2,7 @@ import initialState from "./initialState";
 import * as types from "../actions/actionTypes";
 import {textCanBeElement} from "../utils/astUtils";
 
-export default function input(state = initialState.input, action) {
+export default function inputReducer(state = initialState.input, action) {
   switch (action.type) {
     case types.INPUT_VALUE_CHANGED:
       return {

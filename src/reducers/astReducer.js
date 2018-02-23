@@ -9,7 +9,7 @@ import {
 } from '../utils/astUtils';
 import * as elements from '../utils/astElements';
 
-export default function ast(state = initialState.ast, action) {
+export default function astReducer(state = initialState.ast, action) {
   switch(action.type) {
     case types.INPUT_CONFIRM:
       if(!action.selection) {

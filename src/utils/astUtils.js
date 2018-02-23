@@ -97,3 +97,7 @@ export const textCanBeElement = (text, element) => {
       return false;
   }
 }
+
+export const deepClone = (node) => {
+  return JSON.parse(JSON.stringify(node));
+}
