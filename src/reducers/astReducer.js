@@ -1,10 +1,10 @@
 import initialState from './initialState';
 import * as types from '../actions/actionTypes';
 import {
-  assignKeys,
-  indexOfKey,
-  findElementWithKey,
-  findParentOfElementWithKey,
+  deepAssignPaths,
+  indexOfPath,
+  findElementWithPath,
+  findParentOfElementWithPath,
   clearProperties,
 } from '../utils/astUtils';
 import * as elements from '../utils/astElements';
@@ -43,17 +43,17 @@ function add(ast, element, name, position, inserting) {
   }
 
   if(inserting) {
-    const index = indexOfKey(position);
-    const targetArray = findParentOfElementWithKey(ast, position);
+    const index = indexOfPath(position);
+    const targetArray = findParentOfElementWithPath(ast, position);
     targetArray.splice(index, 0, newElement);
   } else {
-    const targetElement = findElementWithKey(ast, position);
+    const targetElement = findElementWithPath(ast, position);
     clearProperties(targetElement);
     Object.assign(targetElement, newElement);
   }
 
   //TODO: Don't update all keys everytime
-  assignKeys(ast);
+  deepAssignPaths(ast);
 
   return ast;
 }

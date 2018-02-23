@@ -3,12 +3,12 @@ import * as types from "../actions/actionTypes";
 import dotProp from "dot-prop";
 
 import {
-  findElementWithKey,
-  findParentOfElementWithKey,
-  parentKey,
+  findElementWithPath,
+  findParentOfElementWithPath,
+  parentPath,
   propertyOfKey,
-  indexOfKey,
-  joinKeys,
+  indexOfPath,
+  joinPaths,
   textCanBeElement
 } from "../utils/astUtils";
 import * as elements from "../utils/astElements";
@@ -101,13 +101,13 @@ const inputNext = (state) => {
       }
     } else {
       // Move to next element on upper level
-      currentElement = findElementWithKey(state.ast, parentKey(parentKey(position)));
+      currentElement = findElementWithPath(state.ast, parentPath(parentPath(position)));
       [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
     }
   } else {
     // Try to move into the current element
     let tmpPosition;
-    [tmpPosition, inserting] = getFirstEditableChildElementOf(findElementWithKey(state.ast, position));
+    [tmpPosition, inserting] = getFirstEditableChildElementOf(findElementWithPath(state.ast, position));
     if(tmpPosition !== position) {
       return [tmpPosition, inserting];
     }
@@ -115,7 +115,7 @@ const inputNext = (state) => {
     [position, inserting] = getNextEditableParentElementOf(currentElement, state.ast);
 
     if(!inserting) {
-      [position, inserting] = getFirstEditableChildElementOf(findElementWithKey(state.ast, position));
+      [position, inserting] = getFirstEditableChildElementOf(findElementWithPath(state.ast, position));
     }
   }
 
@@ -127,7 +127,7 @@ const getFirstEditableChildElementOf = (element) => {
     const property = elements[element.type].editableFields[0];
     const nextElement = dotProp.get(element, property);
     if(nextElement instanceof Array) {
-      return [joinKeys(element._path, `${property}.0`), true];
+      return [joinPaths(element._path, `${property}.0`), true];
     }
     return getFirstEditableChildElementOf(nextElement);
   }
@@ -136,18 +136,18 @@ const getFirstEditableChildElementOf = (element) => {
 
 const getNextEditableParentElementOf = (element, ast) => {
   let searchProperty = propertyOfKey(element._path);
-  const keyOfParent = parentKey(element._path);
-  let parentElement = findElementWithKey(ast, keyOfParent);
+  const keyOfParent = parentPath(element._path);
+  let parentElement = findElementWithPath(ast, keyOfParent);
 
   if(parentElement instanceof Array) {
     //TODO: Remove exception for VariableDeclaration
-    if(findParentOfElementWithKey(ast, keyOfParent) &&
-      findParentOfElementWithKey(ast, keyOfParent).type === "VariableDeclaration") {
-      parentElement = findParentOfElementWithKey(ast, keyOfParent);
+    if(findParentOfElementWithPath(ast, keyOfParent) &&
+      findParentOfElementWithPath(ast, keyOfParent).type === "VariableDeclaration") {
+      parentElement = findParentOfElementWithPath(ast, keyOfParent);
       searchProperty = "declarations.0.init";
     } else {
-      const currentIndex = indexOfKey(element._path);
-      const newPosition = joinKeys(keyOfParent, currentIndex+1);
+      const currentIndex = indexOfPath(element._path);
+      const newPosition = joinPaths(keyOfParent, currentIndex+1);
       return [newPosition, true];
     }
   }
@@ -158,9 +158,9 @@ const getNextEditableParentElementOf = (element, ast) => {
   if(targetIndex >= parentProperties.length) {
     return getNextEditableParentElementOf(parentElement, ast);
   } else {
-    const newKey = joinKeys(parentElement._path, parentProperties[targetIndex]);
-    if(findElementWithKey(ast, newKey) instanceof Array) {
-      return [joinKeys(newKey, 0), true];
+    const newKey = joinPaths(parentElement._path, parentProperties[targetIndex]);
+    if(findElementWithPath(ast, newKey) instanceof Array) {
+      return [joinPaths(newKey, 0), true];
     }
     return [newKey, false];
   }

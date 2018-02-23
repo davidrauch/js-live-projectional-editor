@@ -6,9 +6,9 @@ import ASTNode from './ASTNode';
 import InputBar from '../InputBar/InputBar';
 import InputPlaceholder from '../InputBar/InputPlaceholder';
 import {
-  joinKeys,
-  parentKey,
-  indexOfKey,
+  joinPaths,
+  parentPath,
+  indexOfPath,
   guid
 } from '../../utils/astUtils';
 import dotProp from 'dot-prop'
@@ -17,7 +17,7 @@ class ASTList extends React.Component {
 
   render = () => {
     const childNodes = dotProp.get(this.props.node, this.props.childrenPath);
-    const myPosition = joinKeys(this.props.node._path, this.props.childrenPath);
+    const myPosition = joinPaths(this.props.node._path, this.props.childrenPath);
 
     // Generate list of children
     let children = [];
@@ -26,7 +26,7 @@ class ASTList extends React.Component {
       children.push(
         <InputPlaceholder
           key={guid()}
-          position={joinKeys(myPosition, i)}
+          position={joinPaths(myPosition, i)}
           inline={this.props.inline}
         />,
         this.props.inline ?
@@ -40,14 +40,14 @@ class ASTList extends React.Component {
     children.push(
       <InputPlaceholder
         key={guid()}
-        position={joinKeys(myPosition, childNodes.length)}
+        position={joinPaths(myPosition, childNodes.length)}
         inline={this.props.inline}
       />
     );
 
     // Show InputBar if necessary
-    if(parentKey(this.props.inputPosition) === myPosition && this.props.inputInserting) {
-      children[indexOfKey(this.props.inputPosition) * 2] = <InputBar key="inputBar"/>;
+    if(parentPath(this.props.inputPosition) === myPosition && this.props.inputInserting) {
+      children[indexOfPath(this.props.inputPosition) * 2] = <InputBar key="inputBar"/>;
     }
 
     return (

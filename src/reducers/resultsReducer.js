@@ -1,6 +1,6 @@
 import initialState from './initialState';
 import * as types from '../actions/actionTypes';
-import { deepClone } from '../utils/astUtils';
+import { deepCloneNode } from '../utils/astUtils';
 import esCodeGen from "escodegen";
 import esTraverse from "estraverse";
 import {
@@ -8,6 +8,9 @@ import {
   builders as b
 } from "../lib/ast-types";
 
+/**
+ * Returns a new results object with all changes applied
+ */
 export default function resultsReducer(immutableState = initialState, action) {
   const immutableResults = immutableState.results;
 
@@ -24,11 +27,11 @@ export default function resultsReducer(immutableState = initialState, action) {
 }
 
 /**
- * Executes an AST and returns the results
+ * Executes an AST and returns the results object
  */
 const runAST = (immutableAST) => {
   // We have to modify the AST, so we make a deep copy of it
-  let mutableAST = deepClone(immutableAST);
+  let mutableAST = deepCloneNode(immutableAST);
 
   // Remove all non-standard parts of the AST
   removeComments(mutableAST);
@@ -62,11 +65,11 @@ const runAST = (immutableAST) => {
 const removeComments = (mutableAST) => {
   esTraverse.replace(mutableAST, {
     enter: function (node) {
-      if(node.type === "Comment") {
+      if(node.type === "Comment" || node.type === "Missing") {
         this.remove();
       }
     },
-    // Extending the existing traversing rules.
+    // Define non-standard elements
     keys: {
         Comment: ["text"],
         Missing: [],

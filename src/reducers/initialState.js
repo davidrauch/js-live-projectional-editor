@@ -1,7 +1,10 @@
-import {assignKeys} from "../utils/astUtils";
+import {
+  deepAssignPaths,
+  deepAssignKeys,
+} from "../utils/astUtils";
 import * as elements from "../utils/astElements";
 
-const initialAST = assignKeys({
+const initialAST = deepAssignKeys(deepAssignPaths({
   "type": "Program",
   "body": [
     {
@@ -179,7 +182,7 @@ const initialAST = assignKeys({
     }
   ],
   "sourceType": "module"
-});
+}));
 
 const initialSuggestions =
   Object.values(elements)
