@@ -9,22 +9,24 @@ import {
 } from '../utils/astUtils';
 import * as elements from '../utils/astElements';
 
-export default function astReducer(state = initialState.ast, action) {
+export default function astReducer(immutableState = initialState, action) {
+  const immutableAST = immutableState.ast;
+
   switch(action.type) {
     case types.INPUT_CONFIRM:
       if(!action.selection) {
-        return state;
+        return immutableAST;
       }
 
       return add(
-        Object.assign({}, state),
+        {...immutableAST}, // TODO: Why is this necessary?
         action.selection.element,
         action.selection.name,
         action.position,
         action.inserting,
       );
     default:
-      return state;
+      return immutableAST;
   }
 }
 

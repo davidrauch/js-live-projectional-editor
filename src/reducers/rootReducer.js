@@ -7,7 +7,7 @@ export default function root(immutableState = initialState, action) {
   // Call specialized reducers
   return {
     ...immutableState,
-    ast: astReducer(immutableState.ast, action),
+    ast: astReducer(immutableState, action),
     input: inputReducer(immutableState, action),
     results: resultsReducer(immutableState, action),
   };
