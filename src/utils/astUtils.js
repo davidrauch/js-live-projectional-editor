@@ -7,8 +7,7 @@ export const guid = () => {
       .toString(16)
       .substring(1);
   }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return  s4() + '-' + s4() + '-' + s4();
 }
 
 const isNumber = (n) => !isNaN(parseFloat(n)) && !isNaN(n - 0)
@@ -90,9 +89,9 @@ export const textCanBeElement = (text, element) => {
     case "Comment":
       return text.indexOf("//") === 0;
     case "Literal":
-      return !isNaN(parseFloat(text)) || text.indexOf("\"") === 0;
+      return isNumber(text) || text.indexOf("\"") === 0;
     case "Identifier":
-      return text.indexOf("//") !== 0 && isNaN(parseFloat(text)) && text.indexOf("\"") !== 0;
+      return text.indexOf("//") !== 0 && !isNumber(text) && text.indexOf("\"") !== 0;
     default:
       return false;
   }
