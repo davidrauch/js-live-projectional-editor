@@ -1,3 +1,9 @@
+# JS Live Projectional Editor Experiment
+
+This project is an experiment to create a live projectional editor for JavaScript using React/Redux. It currently only has very limited syntax support
+
+# Create React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

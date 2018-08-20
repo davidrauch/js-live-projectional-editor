@@ -106,7 +106,12 @@ export class BlockStatement extends Element {
 }
 
 export class ExpressionStatement extends Element {
+  static shortcut = "exp"
+  static description = "Expression Statement"
   static editableFields = ["expression"]
+  static generate = () => b.expressionStatement(
+    missing()
+  )
 }
 
 export class AssignmentExpression extends Element {
@@ -117,10 +122,8 @@ export class CallExpression extends Element {
   static shortcut = "call"
   static description = "Function Call"
   static editableFields = ["callee", "arguments"]
-  static generate = () => b.expressionStatement(
-    b.callExpression(
-      missing(), []
-    )
+  static generate = () => b.callExpression(
+    missing(), []
   )
 }
 
