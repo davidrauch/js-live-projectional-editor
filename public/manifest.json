@@ -1,6 +1,6 @@
 {
-  "short_name": "Masterarbeit",
-  "name": "Masterarbeit",
+  "short_name": "JS Live Projectional Editor",
+  "name": "JS Live Projectional Editor",
   "icons": [],
   "start_url": "./index.html",
   "display": "standalone",
